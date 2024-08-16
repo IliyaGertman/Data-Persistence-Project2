@@ -12,20 +12,36 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
-    
+    public TextManager textManagerScript;
+
     private bool m_Started = false;
     private int m_Points;
-    
     private bool m_GameOver = false;
 
-    
-    // Start is called before the first frame update
     void Start()
+    {
+        // Reset game state
+        m_Started = false;
+        m_Points = 0;
+        m_GameOver = false;
+        ScoreText.text = $"Score : {m_Points}";
+
+        // Deactivate the GameOverText UI
+        GameOverText.SetActive(false);
+
+        // Initialize bricks
+        InitializeBricks();
+
+        // Get TextManager reference
+        textManagerScript = GameObject.FindObjectOfType<TextManager>();
+    }
+
+    void InitializeBricks()
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-        
-        int[] pointCountArray = new [] {1,1,2,2,5,5};
+
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
         for (int i = 0; i < LineCount; ++i)
         {
             for (int x = 0; x < perLine; ++x)
@@ -66,6 +82,11 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+    }
+
+    public int GetScore()
+    {
+        return m_Points;
     }
 
     public void GameOver()
